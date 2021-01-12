@@ -1,0 +1,62 @@
+﻿
+@using Newtonsoft.Json
+@using MyBlazorApp.Data
+@using Syncfusion.Blazor.Gantt
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor
+@using MyBlazorApp.Shared.DataAccess
+@inject HttpClient http
+
+
+@inherits DataAdaptor<GanttDataContext>
+
+@code {
+
+
+    // Performs data Read operation
+    public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
+
+    {
+        IEnumerable<object> data = await http.GetJsonAsync<IEnumerable<GanttDataDetails>>("api/GanttDataDetails") as IEnumerable<object>;
+
+        return dm.RequiresCounts ? new DataResult() { Result = data, Count = data.Count() } : (object)data;
+    }
+
+    // Performs CRUD operation
+    public override async Task<object> BatchUpdateAsync(DataManager dm, object changedRecords, object addedRecords, object deletedRecords, string keyField, string key, int? dropIndex)
+
+    {
+
+        List<GanttDataDetails> addRecord = addedRecords as List<GanttDataDetails>;
+        List<GanttDataDetails> changed = changedRecords as List<GanttDataDetails>;
+        List<GanttDataDetails> deleteRecord = deletedRecords as List<GanttDataDetails>;
+        if (changed != null)
+        {
+            for (var i = 0; i < changed.Count(); i++)
+            {
+
+                var value = changed[i];
+                await http.SendJsonAsync(HttpMethod.Put, "/api/GanttDataDetails/" + changed[i].Id, changed[i] as GanttDataDetails);
+               
+            }
+        }
+        if (deleteRecord != null)
+        {
+            for (var i = 0; i < deleteRecord.Count(); i++)
+            {
+                await http.DeleteAsync("api/GanttDataDetails/" + deleteRecord[i].Id);
+            }
+        }
+        if (addRecord != null)
+        {
+
+
+            for (var i = 0; i < addRecord.Count(); i++)
+            {
+                await http.SendJsonAsync(HttpMethod.Post, "/api/GanttDataDetails", addRecord[i] as GanttDataDetails);
+            }
+        }
+        return (new { addedRecords = addRecord, changedRecords = changed, deletedRecords = deleteRecord });
+    }
+}

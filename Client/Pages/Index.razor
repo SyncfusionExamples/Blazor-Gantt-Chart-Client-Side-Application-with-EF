@@ -1,1 +1,28 @@
-﻿@page "/index"
+﻿@page "/"
+
+@using Syncfusion.Blazor.Gantt
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor
+@using GanttWithEF.Server.Models;
+
+<SfGantt ID="GanttExport" TValue="TaskDatum" HighlightWeekends="true" DurationUnit="DurationUnit.Day" LoadChildOnDemand="true"
+         Toolbar="@(new List<string>(){ "Add", "Edit", "Update", "Delete", "Cancel", "ExpandAll", "CollapseAll"})">
+    <SfDataManager Adaptor="Adaptors.CustomAdaptor" DataType="TaskDatum">
+        <CustomDataAdaptor></CustomDataAdaptor>
+    </SfDataManager>
+    <GanttColumns>
+        <GanttColumn Field=@nameof(TaskDatum.TaskId) Width="100"></GanttColumn>
+        <GanttColumn Field=@nameof(TaskDatum.TaskName) Width="250"></GanttColumn>
+        <GanttColumn Field=@nameof(TaskDatum.StartDate)></GanttColumn>
+        <GanttColumn Field=@nameof(TaskDatum.EndDate)></GanttColumn>
+        <GanttColumn Field=@nameof(TaskDatum.Duration)></GanttColumn>
+        <GanttColumn Field=@nameof(TaskDatum.Progress)></GanttColumn>
+        <GanttColumn Field=@nameof(TaskDatum.ParentId)></GanttColumn>
+    </GanttColumns>
+    <GanttEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" AllowTaskbarEditing="true"></GanttEditSettings>
+    <GanttTimelineSettings>
+        <GanttTopTierSettings Unit="TimelineViewMode.Week" Format="MMM dd, y"></GanttTopTierSettings>
+        <GanttBottomTierSettings Unit="TimelineViewMode.Day"></GanttBottomTierSettings>
+    </GanttTimelineSettings>
+    <GanttTaskFields Id="TaskId" Name="TaskName" StartDate="StartDate" EndDate="EndDate" ParentID="ParentId" Progress="Progress" Duration="Duration"></GanttTaskFields>
+</SfGantt>

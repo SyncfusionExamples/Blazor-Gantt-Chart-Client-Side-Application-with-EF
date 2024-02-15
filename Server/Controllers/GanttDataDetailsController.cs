@@ -2,37 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GanttWithEF.Server.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyBlazorApp.Data;
-using MyBlazorApp.Shared.DataAccess;
 
-namespace MyBlazorApp.Server.Controllers
+
+namespace GanttWithEF.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class GanttDataDetailsController : ControllerBase
     {
-        private readonly GanttDataContext _context;
+        private readonly EfWasmContext _context;
 
-        public GanttDataDetailsController(GanttDataContext context)
+        public GanttDataDetailsController(EfWasmContext context)
         {
             _context = context;
         }
 
         // GET: api/GanttDataDetails
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GanttDataDetails>>> GetGanttData()
+        public async Task<ActionResult<IEnumerable<TaskDatum>>> GetGanttData()
         {
-            return await _context.GanttData.ToListAsync();
+            return await _context.TaskData.ToListAsync();
         }
 
         // GET: api/GanttDataDetails/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GanttDataDetails>> GetGanttDataDetails(int id)
+        public async Task<ActionResult<TaskDatum>> GetGanttDataDetails(int id)
         {
-            var ganttDataDetails = await _context.GanttData.FindAsync(id);
+            var ganttDataDetails = await _context.TaskData.FindAsync(id);
 
             if (ganttDataDetails == null)
             {
@@ -46,9 +46,9 @@ namespace MyBlazorApp.Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGanttDataDetails(int id, GanttDataDetails ganttDataDetails)
+        public async Task<IActionResult> PutGanttDataDetails(int id, TaskDatum ganttDataDetails)
         {
-            if (id != ganttDataDetails.Id)
+            if (id != ganttDataDetails.TaskId)
             {
                 return BadRequest();
             }
@@ -78,25 +78,25 @@ namespace MyBlazorApp.Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<GanttDataDetails>> PostGanttDataDetails(GanttDataDetails ganttDataDetails)
+        public async Task<ActionResult<TaskDatum>> PostGanttDataDetails(TaskDatum ganttDataDetails)
         {
-            _context.GanttData.Add(ganttDataDetails);
+            _context.TaskData.Add(ganttDataDetails);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGanttDataDetails", new { id = ganttDataDetails.Id }, ganttDataDetails);
+            return CreatedAtAction("GetGanttDataDetails", new { id = ganttDataDetails.TaskId }, ganttDataDetails);
         }
 
         // DELETE: api/GanttDataDetails/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<GanttDataDetails>> DeleteGanttDataDetails(int id)
+        public async Task<ActionResult<TaskDatum>> DeleteGanttDataDetails(int id)
         {
-            var ganttDataDetails = await _context.GanttData.FindAsync(id);
+            var ganttDataDetails = await _context.TaskData.FindAsync(id);
             if (ganttDataDetails == null)
             {
                 return NotFound();
             }
 
-            _context.GanttData.Remove(ganttDataDetails);
+            _context.TaskData.Remove(ganttDataDetails);
             await _context.SaveChangesAsync();
 
             return ganttDataDetails;
@@ -104,7 +104,7 @@ namespace MyBlazorApp.Server.Controllers
 
         private bool GanttDataDetailsExists(int id)
         {
-            return _context.GanttData.Any(e => e.Id == id);
+            return _context.TaskData.Any(e => e.TaskId == id);
         }
     }
 }

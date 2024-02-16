@@ -11,4 +11,5 @@ In the Gantt Chart, we can fetch data from the SQL database using the Entity Fra
 * Checkout this project to a location in your disk.
 * Open the solution file using the Visual Studio 2022.
 * Restore the NuGet packages by rebuilding the solution.
+* Update the database connection to the project.
 * Run the project.

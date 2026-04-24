@@ -27,6 +27,58 @@ This architecture is suitable for applications that require centralized data man
 - Syncfusion Blazor Gantt NuGet package
 - A valid Syncfusion license (Community or Trial)
 
+## Database configuration
+
+This sample requires a local SQL Server database to be created manually before running the application.
+
+### Step 1: Create the Database
+
+- Open **Visual Studio**.
+- Go to **View → SQL Server Object Explorer**.
+- Expand the SQL Server instance:
+- Right‑click **Databases** and select **Add New Database**.
+- Enter the database name **GanttDatabase** and Click **Ok**
+
+### Step 2: Create the Required Table
+
+- Expand the Created Database.
+- Right‑click **Tables** and select **New Query**.
+- Execute the following SQL script:
+
+```sql
+CREATE TABLE TaskData (
+  TaskId INT NOT NULL PRIMARY KEY,
+  TaskName NVARCHAR(255) NULL,
+  StartDate DATETIME NULL,
+  EndDate DATETIME NULL,
+  ParentId INT NULL,
+  Progress INT NULL,
+  Duration INT NULL
+);
+```
+### Step 3: Insert a Sample Record
+
+- Execute the following SQL script to add a new record in the Table
+
+```sql
+INSERT INTO TaskData
+(TaskId, TaskName, StartDate, EndDate, ParentId, Progress, Duration)
+VALUES
+(1, 'Root Task', '2024-01-01', '2024-01-10', NULL, 50, 10);
+
+```
+### Step 4: Configure the Connection String
+- Open the server project appsettings.json file.
+- Update the connection string as shown below:
+
+```
+{
+  "ConnectionStrings": {
+    "GanttDetailsDatabase": "Server=(localdb)\\MSSQLLocalDB;Database=GanttDatabase;Trusted_Connection=True;TrustServerCertificate=True;"
+  }
+}
+```
+
 ## How to run the project
 
 - Clone or download this repository to your local system.

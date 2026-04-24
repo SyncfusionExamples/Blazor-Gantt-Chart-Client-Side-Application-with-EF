@@ -27,7 +27,7 @@ This architecture is suitable for applications that require centralized data man
 - Syncfusion Blazor Gantt NuGet package
 - A valid Syncfusion license (Community or Trial)
 
-## Database Setup
+## Database configuration
 
 This sample requires a local SQL Server database to be created manually before running the application.
 

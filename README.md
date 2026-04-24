@@ -4,9 +4,11 @@ This repository contains a sample Blazor client-side application that demonstrat
 
 ## Project overview
 
-The Blazor Gantt Chart in this application retrieves task data from a SQL database through Entity Framework. Data operations such as create, update, and delete are processed on the server by using DataManager support. A CustomAdaptor is configured to handle communication between the Gantt Chart component and server-side methods, ensuring that changes made in the Gantt Chart interface are persisted to the database.
+In this sample, the Blazor Gantt Chart retrieves and persists task data through a server‑side API backed by Entity Framework. Although the Gantt Chart runs in a client‑side Blazor application, all data operations such as create, update, and delete—are processed on the server.
 
-This approach enables centralized data handling while allowing the client-side application to reflect real-time updates from the data source. The sample focuses on demonstrating data binding, CRUD synchronization, and adaptor-based server interaction.
+The Gantt Chart communicates with the server using the SfDataManager and a URL adaptor, which routes data requests to ASP.NET Core controller endpoints. This ensures that changes made in the Gantt Chart UI are reliably persisted to the database and reflected back in the client.
+
+This architecture is suitable for applications that require centralized data management, database integrity, and scalable server‑side processing, while still providing a rich client‑side experience.
 
 ## Key features
 
@@ -18,16 +20,34 @@ This approach enables centralized data handling while allowing the client-side a
 
 ## Prerequisites
 
-- Visual Studio 2026
-- .NET SDK compatible with Blazor
+- Visual Studio 2022 (or later)
+- .NET SDK 8.0 or later
+- ASP.NET and Blazor workloads installed in Visual Studio
 - SQL Server or a compatible SQL database
 - Syncfusion Blazor Gantt NuGet package
+- A valid Syncfusion license (Community or Trial)
 
-## How to Run the Project
+## How to run the project
 
-1. Clone or checkout this repository to a local folder.
-2. Open the solution file in Visual Studio 2026.
-3. Rebuild the solution to restore required NuGet packages.
-4. Update the database connection string in the project configuration.
-5. Ensure the database is accessible and matches the Entity Framework model.
-6. Run the application and verify data loading and CRUD operations in the Gantt Chart.
+- Clone or download this repository to your local system.
+- Open the project file (.csproj) in Visual Studio 2022 or later.
+- Restore the required NuGet packages.
+- Update the database connection string in the server project - configuration.
+- Ensure the database is accessible and matches the Entity Framework model.
+- Run the server project.
+- Run the client application.
+- Verify that Gantt data loads correctly and that CRUD operations are persisted in the database.
+
+## Reference
+
+For additional details, refer to the documentation:  
+https://blazor.syncfusion.com/documentation/gantt-chart/connecting-to-adaptors/url-adaptor
+
+## Syncfusion License
+
+This sample uses the Syncfusion Blazor components, which require a valid Syncfusion license.
+
+- Community License: https://www.syncfusion.com/products/communitylicense
+- Trial License: https://www.syncfusion.com/account/manage-trials/start-trials
+
+Ensure the license key is registered before running the application.

@@ -1,0 +1,52 @@
+﻿@* 
+@using Newtonsoft.Json
+@using Syncfusion.Blazor.Gantt
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor
+@using GanttWithEF.Server.Models
+
+@inject HttpClient http
+
+
+@inherits DataAdaptor<EfWasmContext>
+
+@code {
+    // Performs data Read operation
+    public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
+    {
+        IEnumerable<object> data = await http.GetFromJsonAsync<IEnumerable<TaskDatum>>("api/GanttDataDetails") as IEnumerable<object>;
+        return dm.RequiresCounts ? new DataResult() { Result = data, Count = data.Count() } : (object)data;
+    }
+
+    // Performs CRUD operation
+    public override async Task<object> BatchUpdateAsync(DataManager dm, object changedRecords, object addedRecords, object deletedRecords, string keyField, string key, int? dropIndex)
+    {
+        List<TaskDatum> addRecord = addedRecords as List<TaskDatum>;
+        List<TaskDatum> changed = changedRecords as List<TaskDatum>;
+        List<TaskDatum> deleteRecord = deletedRecords as List<TaskDatum>;
+        if (changed != null)
+        {
+            for (var i = 0; i < changed.Count(); i++)
+            {
+                var value = changed[i];
+                await http.PutAsJsonAsync("/api/GanttDataDetails/" + changed[i].TaskId, changed[i] as TaskDatum);
+            }
+        }
+        if (deleteRecord != null)
+        {
+            for (var i = 0; i < deleteRecord.Count(); i++)
+            {
+                await http.DeleteAsync("api/GanttDataDetails/" + deleteRecord[i].TaskId);
+            }
+        }
+        if (addRecord != null)
+        {
+            for (var i = 0; i < addRecord.Count(); i++)
+            {
+                await http.PostAsJsonAsync("/api/GanttDataDetails", addRecord[i]);
+            }
+        }
+        return (new { addedRecords = addRecord, changedRecords = changed, deletedRecords = deleteRecord });
+    }
+} *@
